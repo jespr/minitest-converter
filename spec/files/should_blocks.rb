@@ -1,0 +1,2 @@
+should "pass" do
+end
