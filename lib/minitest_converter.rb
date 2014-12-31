@@ -21,7 +21,12 @@ module MinitestConverter
       replaced = convert_should_to_it(replaced)
       replaced = convert_setup_to_before(replaced)
 
-      replaced
+      File.open(@path, 'w') { |file| file.write(replaced) }
+      p "Done!"
+
+      File.open("known_word_replacements.yml", "w") do |file|
+        file.write @known_word_replacements.to_yaml
+      end
     end
 
     private
