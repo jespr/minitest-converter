@@ -1,6 +1,6 @@
 # Minitest::Converter
 
-TODO: Write a gem description
+Converts Shoulda tests to minitests
 
 ## Installation
 
@@ -18,7 +18,12 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+`minitest_converter [path-to-file]`
+
+It converts `should` to `it`
+`context` to `describe`
+`setup` to `before`
+
 
 ## Contributing
 
