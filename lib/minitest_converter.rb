@@ -1,23 +1,28 @@
 require "minitest_converter/version"
 require "minitest_converter/converters/shoulda"
-require "yaml"
 
 module MinitestConverter
   class Converter
     attr_reader :known_word_replacements
 
-    def initialize(path, stdin=STDIN)
-      @path = path
+    def initialize(path)
+      @path   = path
       @output = []
-      # @known_word_replacements = YAML::load_file = "known_word_replacements.yml"
-      @stdin = stdin
     end
 
     def convert!
-      content = File.read(@path)
-      replaced = MinitestConverter::Converters::Shoulda.convert!(content)
+      files = Dir[File.join(@path, "{**/,}*_{test,spec}.rb")].uniq
 
-      File.open(@path, 'w') { |file| file.write(replaced) }
+      files.each do |file|
+        puts file
+        convert_and_write_content(file)
+      end
+    end
+
+    def convert_and_write_content(filename)
+      replaced = MinitestConverter::Converters::Shoulda.convert!(File.read(filename))
+
+      File.open(filename, 'w') { |file| file.write(replaced) }
       p "Done!"
     end
   end
