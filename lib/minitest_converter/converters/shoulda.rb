@@ -74,7 +74,7 @@ module MinitestConverter
             end
           end
         end
-        @content.gsub!(/ should /, ' it ')
+        @content.gsub!(/^(\s+)should /, "\\1it ")
       end
     end
   end
