@@ -9,7 +9,7 @@ module MinitestConverter
     end
 
     def convert!
-      files = Dir[File.join(@path, "{**/,}*_{test,spec}.rb")].uniq
+      files = (File.file?(@path) ? [@path] : Dir[File.join(@path, "{**/,}*_{test,spec}.rb")].uniq)
 
       files.each do |file|
         puts file
@@ -17,10 +17,11 @@ module MinitestConverter
       end
     end
 
+    private
+
     def convert_and_write_content(filename)
       replaced = MinitestConverter::Converters::Shoulda.convert!(File.read(filename))
-
-      File.open(filename, 'w') { |file| file.write(replaced) }
+      File.write(filename, replaced)
       p "Done!"
     end
   end
