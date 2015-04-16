@@ -3,8 +3,6 @@ require "minitest_converter/converters/shoulda"
 
 module MinitestConverter
   class Converter
-    attr_reader :known_word_replacements
-
     def initialize(path)
       @path   = path
       @output = []
