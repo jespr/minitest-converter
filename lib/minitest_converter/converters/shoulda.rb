@@ -37,14 +37,17 @@ module MinitestConverter
       def convert_class_definition
         return unless class_name = @content[/class (\S+) < ActiveSupport::TestCase/, 1]
         puts 'Converting class definition.....'
-        class_name_input = ""
-        if @ask_for_describe_class_name
-          puts "Enter describe class name (#{class_name}):"
-          class_name_input = @stdin.gets.to_s.chomp.strip
-        end
-        class_name_input = class_name.gsub('Test', '') if class_name_input.empty?
+        guess = class_name.gsub('Test', '')
+        described = guess
 
-        @content.gsub!("class #{class_name} < ActiveSupport::TestCase", "describe '#{class_name_input}' do")
+        # let user enter the class name manually
+        if @ask_for_describe_class_name
+          puts "Described class for #{class_name}, Enter for #{guess}:"
+          input = @stdin.gets.to_s.chomp.strip
+          described = input unless input.empty?
+        end
+
+        @content.gsub!("class #{class_name} < ActiveSupport::TestCase", "describe '#{described}' do")
       end
 
       def convert_context_to_describe
