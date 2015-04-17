@@ -48,7 +48,7 @@ module MinitestConverter
       end
 
       def convert_context_to_describe
-        @content.gsub!('context', 'describe')
+        @content.gsub!(/^(\s+)context /, "\\1describe ")
       end
 
       def convert_setup_to_before
