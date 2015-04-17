@@ -60,21 +60,15 @@ module MinitestConverter
       end
 
       def convert_should_to_it
-        matches = @content.scan(/^\s+should\s+['"](.*)['"]\s+do$/)
-
-        matches.each do |match|
-          existing = match[0]
-          first_word = existing.split(' ').first
-          unless substitute = @replacements[first_word]
-            substitute = case first_word
-            when /(ly|s)$/ then first_word
-            else
-              "#{first_word}s"
-            end
+        @content.gsub!(/^(\s+)should\s+(['"])(\S+)( .*)?['"]\s+do\s*$/) do
+          space, quotes, first_word, rest = $1, $2, $3, $4
+          first_word = @replacements[first_word] || case first_word
+          when /(ly|s)$/ then first_word
+          else
+            "#{first_word}s"
           end
-          @content.gsub!(match[0], existing.gsub(first_word, substitute))
+          "#{space}it #{quotes}#{first_word}#{rest}#{quotes} do"
         end
-        @content.gsub!(/^(\s+)should /, "\\1it ")
       end
     end
   end
