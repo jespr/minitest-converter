@@ -5,8 +5,27 @@ root = File.expand_path("../..", __FILE__)
 $LOAD_PATH << "#{root}/lib" if File.exist?("#{root}/Gemfile")
 
 require 'minitest_converter'
+require 'optparse'
 
-raise "Only 1 arg" if ARGV.size != 1
+options = {}
+parser = OptionParser.new do |opts|
+  opts.banner = <<BANNER
+Convert shoulda to minitest.
 
-MinitestConverter::Converter.new(ARGV[0]).convert!
+Usage:
+    minitest_converter PATH [options]
 
+Options:
+BANNER
+  opts.on("--ask-class", "Ask for described class name when converting") { options[:ask_for_describe_class_name] = true }
+  opts.on("-h", "--help","Show this.") { puts opts; exit }
+  opts.on('-v', '--version','Show Version'){ puts Minitest::Coverter::VERSION; exit}
+end
+parser.parse!
+
+if ARGV.size != 1
+  puts parser
+  exit 1
+end
+
+MinitestConverter::Converter.new(ARGV[0], options).convert!

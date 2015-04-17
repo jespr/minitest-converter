@@ -53,3 +53,10 @@ configure: configures
 creates: ''
 returns: ''
 implement: implements
+provide: provides
+serialize: serializes
+default: defaults
+normalize: normalizes
+validate: validates
+include: includes
+look: looks

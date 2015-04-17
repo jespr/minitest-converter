@@ -7,15 +7,15 @@ module MinitestConverter
 
       attr_reader :content
 
-      def self.convert!(content)
-        new(content, STDIN).convert
+      def self.convert!(content, options={})
+        new(content, STDIN, options).convert
       end
 
-      def initialize(content, stdin=STDIN, opts={})
+      def initialize(content, stdin=STDIN, options={})
         @content                     = content
         @stdin                       = stdin
         @replacements                = YAML.load_file(REPLACEMENTS)
-        @ask_for_describe_class_name = opts[:ask_for_describe_class_name]
+        @ask_for_describe_class_name = options[:ask_for_describe_class_name]
       end
 
       def convert

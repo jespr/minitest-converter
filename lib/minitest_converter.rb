@@ -3,7 +3,8 @@ require "minitest_converter/converters/shoulda"
 
 module MinitestConverter
   class Converter
-    def initialize(path)
+    def initialize(path, options={})
+      @options = options
       @path   = path
       @output = []
     end
@@ -20,9 +21,9 @@ module MinitestConverter
     private
 
     def convert_and_write_content(filename)
-      replaced = MinitestConverter::Converters::Shoulda.convert!(File.read(filename))
+      replaced = MinitestConverter::Converters::Shoulda.convert!(File.read(filename), @options)
       File.write(filename, replaced)
-      p "Done!"
+      puts "Done!"
     end
   end
 end
