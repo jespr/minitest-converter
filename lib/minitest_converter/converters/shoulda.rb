@@ -62,17 +62,14 @@ module MinitestConverter
         matches.each do |match|
           existing = match[0]
           first_word = existing.split(' ').first
-          if substitute = @replacements[first_word]
-            @content.gsub!(match[0], existing.gsub(first_word, substitute))
-          else
-            puts "Rewrite first word (#{existing})"
-            substitute = @stdin.gets.to_s.chomp.strip
-            store_replacement first_word, substitute
-
-            unless first_word == substitute
-              @content.gsub!(match[0], existing.gsub(first_word, substitute))
+          unless substitute = @replacements[first_word]
+            substitute = case first_word
+            when /(ly|s)$/ then first_word
+            else
+              "#{first_word}s"
             end
           end
+          @content.gsub!(match[0], existing.gsub(first_word, substitute))
         end
         @content.gsub!(/^(\s+)should /, "\\1it ")
       end
