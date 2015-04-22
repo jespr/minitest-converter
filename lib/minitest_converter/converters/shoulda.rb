@@ -51,7 +51,7 @@ module MinitestConverter
       end
 
       def convert_context_to_describe
-        @content.gsub!(/^(\s+)context /, "\\1describe ")
+        @content.gsub!(/^(\s+)context ([^= ])/, "\\1describe \\2")
       end
 
       def convert_setup_to_before
@@ -64,6 +64,7 @@ module MinitestConverter
           space, quotes, first_word, rest = $1, $2, $3, $4
           first_word = @replacements[first_word] || case first_word
           when /(ly|s)$/ then first_word
+          when /^[^a-zA-Z]+$/ then first_word
           else
             "#{first_word}s"
           end
