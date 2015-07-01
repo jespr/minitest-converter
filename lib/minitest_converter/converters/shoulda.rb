@@ -23,6 +23,7 @@ module MinitestConverter
         convert_context_to_describe
         convert_should_to_it
         convert_setup_to_before
+        convert_teardown_to_after
 
         @content
       end
@@ -57,6 +58,11 @@ module MinitestConverter
       def convert_setup_to_before
         @content.gsub!(/setup do/, 'before do')
         @content.gsub!(/setup {/, 'before {')
+      end
+
+      def convert_teardown_to_after
+        @content.gsub!(/teardown do/, 'after do')
+        @content.gsub!(/teardown {/, 'after {')
       end
 
       def convert_should_to_it
