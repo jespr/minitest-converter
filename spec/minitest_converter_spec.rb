@@ -41,4 +41,13 @@ describe MinitestConverter::Converter do
       expect(File.read(file)).to eq("before do\n  something = 'test'\nend\n\nbefore { something = 'test' }\n")
     end
   end
+
+  it 'converts teardown blocks to after format' do
+    file = 'spec/files/setup_blocks.rb'
+    revert file do
+      converter = MinitestConverter::Converter.new(file)
+      converter.convert!
+      expect(File.read(file)).to eq("after do\n  something = 'test'\nend\n\nafter { something = 'test' }\n")
+    end
+  end
 end
